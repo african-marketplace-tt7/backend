@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.lambdaschool</groupId>
-    <artifactId>foundation</artifactId>
+    <artifactId>africanmarketplace</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>African Marketplace</name>
     <description>Backend for African Marketplace</description>

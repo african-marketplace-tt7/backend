@@ -76,7 +76,8 @@ public class User
     private String preferredCurrency;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MarketLocation> marketLocations = new ArrayList<>();
+    @JsonIgnoreProperties(value = "user", allowSetters = true)
+    private Set<MarketLocation> marketLocations = new HashSet<>();
 
     public User(@NotNull String username,
                 @NotNull String password,
@@ -87,8 +88,8 @@ public class User
                 String country,
                 String primaryLanguage,
                 String preferredCurrency) {
-        this.username = username;
-        this.password = password;
+        setUsername(username);
+        setPassword(password);
         this.primaryemail = primaryemail;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -273,11 +274,11 @@ public class User
         this.preferredCurrency = preferredCurrency;
     }
 
-    public List<MarketLocation> getMarketLocations() {
+    public Set<MarketLocation> getMarketLocations() {
         return marketLocations;
     }
 
-    public void setMarketLocations(List<MarketLocation> marketLocations) {
+    public void setMarketLocations(Set<MarketLocation> marketLocations) {
         this.marketLocations = marketLocations;
     }
 

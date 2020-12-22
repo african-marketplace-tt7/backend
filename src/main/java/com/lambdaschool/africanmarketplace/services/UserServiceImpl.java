@@ -1,9 +1,7 @@
 package com.lambdaschool.africanmarketplace.services;
 
 import com.lambdaschool.africanmarketplace.exceptions.ResourceNotFoundException;
-import com.lambdaschool.africanmarketplace.models.Role;
-import com.lambdaschool.africanmarketplace.models.User;
-import com.lambdaschool.africanmarketplace.models.UserRoles;
+import com.lambdaschool.africanmarketplace.models.*;
 import com.lambdaschool.africanmarketplace.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +23,10 @@ public class UserServiceImpl
      */
     @Autowired
     private UserRepository userrepos;
+
+    @Autowired
+    private MarketLocationService marketLocationService;
+
 
     /**
      * Connects this service to the Role table
@@ -118,6 +120,14 @@ public class UserServiceImpl
             newUser.getRoles()
                 .add(new UserRoles(newUser,
                     addRole));
+        }
+
+
+        for (MarketLocation ml : user.getMarketLocations())
+        {
+            ml.setUser(newUser);
+            MarketLocation newMarketLocation = marketLocationService.save(ml);
+            newUser.getMarketLocations().add(newMarketLocation);
         }
 
         return userrepos.save(newUser);

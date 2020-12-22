@@ -43,8 +43,8 @@ public class Item extends Auditable{
                 @NotNull String subCat,
                 @NotNull String commodityProduct,
                 @NotNull String description,
-                double salePrice,
-                @NotNull List<MarketLocation> marketsSold) {
+                double salePrice)
+    {
         this.commodityCat = commodityCat;
         this.subCat = subCat;
         this.commodityProduct = commodityProduct;

@@ -27,7 +27,6 @@ public class MarketLocation extends Auditable{
     @NotNull
     private String country;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "userid")
     @JsonIgnoreProperties(value = "user", allowSetters = true)
@@ -46,13 +45,12 @@ public class MarketLocation extends Auditable{
     public MarketLocation(@NotNull String name,
                           @NotNull String street,
                           @NotNull String city,
-                          @NotNull String country,
-                          @NotNull User user) {
+                          @NotNull String country)
+    {
         this.name = name;
         this.street = street;
         this.city = city;
         this.country = country;
-        this.user = user;
     }
 
     public long getMarketlocationid() {
