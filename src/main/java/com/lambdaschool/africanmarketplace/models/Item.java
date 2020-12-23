@@ -29,12 +29,19 @@ public class Item extends Auditable{
 
     private double salePrice;
 
+    private double quantity;
+
     @ManyToMany()
     @JoinTable(name = "marketlocationitem",
-            joinColumns = @JoinColumn(name = "marketlocationid"),
-            inverseJoinColumns = @JoinColumn(name = "itemid"))
-    @JsonIgnoreProperties(value = "marketlocations")
+            joinColumns = @JoinColumn(name = "itemid"),
+            inverseJoinColumns = @JoinColumn(name = "marketlocationid"))
+    @JsonIgnoreProperties(value = "user")
     private List<MarketLocation> marketsSold = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "userid")
+    @JsonIgnoreProperties(value = "user", allowSetters = true)
+    private User user;
 
     public Item() {
     }
@@ -43,14 +50,15 @@ public class Item extends Auditable{
                 @NotNull String subCat,
                 @NotNull String commodityProduct,
                 @NotNull String description,
-                double salePrice)
+                double salePrice,
+                double quantity)
     {
         this.commodityCat = commodityCat;
         this.subCat = subCat;
         this.commodityProduct = commodityProduct;
         this.description = description;
         this.salePrice = salePrice;
-        this.marketsSold = marketsSold;
+        this.quantity = quantity;
     }
 
     public long getItemid() {
@@ -109,5 +117,19 @@ public class Item extends Auditable{
         this.marketsSold = marketsSold;
     }
 
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
 }

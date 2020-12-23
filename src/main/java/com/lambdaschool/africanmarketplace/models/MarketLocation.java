@@ -1,5 +1,6 @@
 package com.lambdaschool.africanmarketplace.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -36,7 +37,7 @@ public class MarketLocation extends Auditable{
     @JoinTable(name = "marketlocationitem",
             joinColumns = @JoinColumn(name = "marketlocationid"),
             inverseJoinColumns = @JoinColumn(name = "itemid"))
-    @JsonIgnoreProperties(value = "items")
+    @JsonIgnore
     private List<Item> items = new ArrayList<>();
 
     public MarketLocation() {

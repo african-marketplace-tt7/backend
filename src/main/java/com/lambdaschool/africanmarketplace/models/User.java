@@ -49,7 +49,7 @@ public class User
     @NotNull
     @Column(unique = true)
     @Email
-    private String primaryemail;
+    private String email;
 
     /**
      * Part of the join relationship between user and role
@@ -58,8 +58,7 @@ public class User
     @OneToMany(mappedBy = "user",
         cascade = CascadeType.ALL,
         orphanRemoval = true)
-    @JsonIgnoreProperties(value = "user",
-        allowSetters = true)
+    @JsonIgnore
     private Set<UserRoles> roles = new HashSet<>();
 
 
@@ -79,9 +78,13 @@ public class User
     @JsonIgnoreProperties(value = "user", allowSetters = true)
     private Set<MarketLocation> marketLocations = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties(value = "user", allowSetters = true)
+    private List<Item> itemsForSale = new ArrayList<>();
+
     public User(@NotNull String username,
                 @NotNull String password,
-                @NotNull @Email String primaryemail,
+                @NotNull @Email String email,
                 String firstName,
                 String lastName,
                 String city,
@@ -90,7 +93,7 @@ public class User
                 String preferredCurrency) {
         setUsername(username);
         setPassword(password);
-        this.primaryemail = primaryemail;
+        this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.city = city;
@@ -162,9 +165,9 @@ public class User
      *
      * @return the primary email (String) for the user converted to lowercase
      */
-    public String getPrimaryemail()
+    public String getEmail()
     {
-        return primaryemail;
+        return email;
     }
 
     /**
@@ -172,9 +175,9 @@ public class User
      *
      * @param primaryemail the new primary email (String) for the user converted to lowercase
      */
-    public void setPrimaryemail(String primaryemail)
+    public void setEmail(String primaryemail)
     {
-        this.primaryemail = primaryemail.toLowerCase();
+        this.email = primaryemail.toLowerCase();
     }
 
     /**
@@ -280,6 +283,14 @@ public class User
 
     public void setMarketLocations(Set<MarketLocation> marketLocations) {
         this.marketLocations = marketLocations;
+    }
+
+    public List<Item> getItemsForSale() {
+        return itemsForSale;
+    }
+
+    public void setItemsForSale(List<Item> itemsForSale) {
+        this.itemsForSale = itemsForSale;
     }
 
     /**
