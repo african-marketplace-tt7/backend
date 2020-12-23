@@ -141,32 +141,33 @@ public class SeedData
         vegetablesSub.add("Onions");
         vegetablesSub.add("Tomatoes");
 
-        String cpAnimalProducts[] = new String[]{"Eggs", "Exotic Eggs", "Local Eggs", "Milk", "Nile Perch", "Processed Honey", "Tilapia", "Unprocessed Honey"};
-        String cpLivestock[] = new String[]{"Beef", "Goat Meat", "Pork"};
-        String cpPoultry[] = new String[]{"Exotic Chicken", "Local Chicken", "Turkey"};
-        String cpBeans[] = new String[]{"Agwedde Beans", "Beans", "Beans (K132)", "Beans Canadian", "Beans Mwitemania", "Beans Rosecoco", "Black Beans (Dolichos)",
+        String[] cpAnimalProducts = new String[]{"Eggs", "Exotic Eggs", "Local Eggs", "Milk", "Nile Perch", "Processed Honey", "Tilapia", "Unprocessed Honey"};
+        String[] cpLivestock = new String[]{"Beef", "Goat Meat", "Pork"};
+        String[] cpPoultry = new String[]{"Exotic Chicken", "Local Chicken", "Turkey"};
+        String[] cpBeans = new String[]{"Agwedde Beans", "Beans", "Beans (K132)", "Beans Canadian", "Beans Mwitemania", "Beans Rosecoco", "Black Beans (Dolichos)",
         "Dolichos (Njahi)", "Green Gram", "Kidney Beans", "Mixed Beans", "Mwezi Moja", "Nambale Beans", "Old Beans", "Red Beans", "Soya Beans", "White Beans", "Yellow Beans"};
-        String cpMaize[] = new String[]{"Dry Maize", "Green Maize", "Maize", "Maize Bran", "Maize Flour"};
-        String cpMillet[] = new String[]{"Bulrush Millet", "Finger Millet", "Millet Flour", "Millet Grain", "Pearl Millet", "White Millet"};
-        String cpSorghum[] = new String[]{"Red Sorghum", "Sorghum", "Sorghum Flour", "Sorghum Grain", "White Sorghum"};
-        String cpWheat[] = new String[]{"Wheat", "Wheat Bran", "Wheat Flour"};
-        String cpRice[] = new String[]{"Imported Rice", "Kahama Rice", "Kayiso Rice", "Kilombero Rice", "Mbeya Rice", "Morogoro Rice", "Paddy Rice", "Rice", "Rice Bran",
+        String[] cpMaize = new String[]{"Dry Maize", "Green Maize", "Maize", "Maize Bran", "Maize Flour"};
+        String[] cpMillet = new String[]{"Bulrush Millet", "Finger Millet", "Millet Flour", "Millet Grain", "Pearl Millet", "White Millet"};
+        String[] cpSorghum = new String[]{"Red Sorghum", "Sorghum", "Sorghum Flour", "Sorghum Grain", "White Sorghum"};
+        String[] cpWheat = new String[]{"Wheat", "Wheat Bran", "Wheat Flour"};
+        String[] cpRice = new String[]{"Imported Rice", "Kahama Rice", "Kayiso Rice", "Kilombero Rice", "Mbeya Rice", "Morogoro Rice", "Paddy Rice", "Rice", "Rice Bran",
         "Super Rice", "Unprocessed/husked rice", "Upland Rice"};
-        String cpBananas[] = new String[]{"Apple Bananas", "Cavendish (Bogoya)", "Cooking Bananas", "Ripe Bananas"};
-        String cpMangoes[] = new String[]{"Mangoes Local", "Mangoes Ngowe"};
-        String cpCoffee[] = new String[]{"Coffee (Arabica)", "Coffee (Robusta)"};
-        String cpPeas[] = new String[]{"Chic Pea", "Cowpeas", "Dry Peas", "Fresh Peas", "Green Peas", "Peas", "Pigeon Peas"};
-        String cpCassava[] = new String[]{"Cassava Chips", "Cassava Flour", "Cassava Fresh", "Dry Fermented Cassava", "Sun Dried Cassava"};
-        String cpPotatoes[] = new String[]{"Red Irish Potatoes", "Round Potatoes", "Sweet Potatoes", "White Fleshed Sweet Potatoes", "White Irish Potatoes"};
-        String cpNuts[] = new String[]{"Ground Nuts", "Groundnuts"};
-        String cpSunflowers[] = new String[]{"Sunflower Seed", "Sunflower Seed Cake"};
+        String[] cpBananas = new String[]{"Apple Bananas", "Cavendish (Bogoya)", "Cooking Bananas", "Ripe Bananas"};
+        String[] cpMangoes = new String[]{"Mangoes Local", "Mangoes Ngowe"};
+        String[] cpCoffee = new String[]{"Coffee (Arabica)", "Coffee (Robusta)"};
+        String[] cpPeas = new String[]{"Chic Pea", "Cowpeas", "Dry Peas", "Fresh Peas", "Green Peas", "Peas", "Pigeon Peas"};
+        String[] cpCassava = new String[]{"Cassava Chips", "Cassava Flour", "Cassava Fresh", "Dry Fermented Cassava", "Sun Dried Cassava"};
+        String[] cpPotatoes = new String[]{"Red Irish Potatoes", "Round Potatoes", "Sweet Potatoes", "White Fleshed Sweet Potatoes", "White Irish Potatoes"};
+        String[] cpNuts = new String[]{"Ground Nuts", "Groundnuts"};
+        String[] cpSunflowers = new String[]{"Sunflower Seed", "Sunflower Seed Cake"};
+        String[] cpOnions = new String[]{"Onions Dry", "Spring Onions"};
 
 
 
         userService.deleteAll();
         roleService.deleteAll();
-        Role r1 = new Role("admin");
-        Role r2 = new Role("user");
+        Role r1 = new Role("ADMIN");
+        Role r2 = new Role("USER");
 
         r1 = roleService.save(r1);
         r2 = roleService.save(r2);
@@ -187,13 +188,15 @@ public class SeedData
         MarketLocation mk2 = new MarketLocation("Test Market 2", "Main Street", "Chicago", "USA");
 
         Item i1 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 10.00, 50.00);
+        Item i2 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 20.00, 100.00);
         mk1.getItems().add(i1);
+        mk1.getItems().add(i2);
 
         u1.getMarketLocations().add(mk1);
         u1.getMarketLocations().add(mk2);
         userService.save(u1);
 
-        for(int i = 0; i < 100; i++)
+        for(int i = 0; i < 500; i++)
         {
             String city;
             String country;
@@ -258,7 +261,7 @@ public class SeedData
             for(int j = 0; j < (int)(Math.random() * 3 + 1); j++)
             {
                 MarketLocation newMarketLocation = new MarketLocation(nameFaker.leagueOfLegends().location(), nameFaker.address().streetAddress(), city, country);
-                for(int k = 0; k < (int)(Math.random() * 3); k++)
+                for(int k = 0; k < (int)(Math.random() * 2 + 1); k++)
                 {
                     String category = commoditycat.get((int)(Math.random() * 11));
                     String subCat;
@@ -303,15 +306,142 @@ public class SeedData
                     }
 
                     switch(subCat){
+                        case "Animal Products":
+                            cp = cpAnimalProducts[(int)(Math.random() * cpAnimalProducts.length)];
+                            break;
+                        case "Livestock":
+                            cp = cpLivestock[(int)(Math.random() * cpLivestock.length)];
+                            break;
+                        case "Poultry":
+                            cp = cpPoultry[(int)(Math.random() * cpPoultry.length)];
+                            break;
+                        case "Beans":
+                            cp = cpBeans[(int)(Math.random() * cpBeans.length)];
+                            break;
+                        case "Maize":
+                            cp = cpMaize[(int)(Math.random() * cpMaize.length)];
+                            break;
+                        case "Barley":
+                            cp = "Barley";
+                            break;
+                        case "Millet":
+                            cp = cpMillet[(int)(Math.random() * cpMillet.length)];
+                            break;
+                        case "Sorghum":
+                            cp = cpSorghum[(int)(Math.random() * cpSorghum.length)];
+                            break;
+                        case "Wheat":
+                            cp = cpWheat[(int)(Math.random() * cpWheat.length)];
+                            break;
+                        case "Rice":
+                            cp = cpRice[(int)(Math.random() * cpRice.length)];
+                            break;
+                        case "Avocado":
+                            cp = "Avocado";
+                            break;
+                        case "Bananas":
+                            cp = cpBananas[(int)(Math.random() * cpBananas.length)];
+                            break;
+                        case "Fruits":
+                            cp = "Passion Fruits";
+                            break;
+                        case "Lemons":
+                            cp = "Lemons";
+                            break;
+                        case "Limes":
+                            cp = "Limes";
+                            break;
+                        case "Mangoes":
+                            cp = cpMangoes[(int)(Math.random() * cpMangoes.length)];
+                            break;
+                        case "Oranges":
+                            cp = "Oranges";
+                            break;
+                        case "Pawpaw":
+                            cp = "Pawpaw";
+                            break;
+                        case "Pineapples":
+                            cp = "Pineapples";
+                            break;
+                        case "Coffee":
+                            cp = cpCoffee[(int)(Math.random() * cpCoffee.length)];
+                            break;
+                        case "Cotton":
+                            cp = "Unprocessed Cotton";
+                            break;
+                        case "Tea":
+                            cp = "Unprocessed Tea";
+                            break;
+                        case "Tobacco":
+                            cp = "Tobacco";
+                            break;
+                        case "Vanilla":
+                            cp = "Unprocessed Vanilla";
+                            break;
+                        case "Peas":
+                            cp = cpPeas[(int)(Math.random() * cpPeas.length)];
+                            break;
+                        case "Cassava":
+                            cp = cpCassava[(int)(Math.random() * cpCassava.length)];
+                            break;
+                        case "Potatoes":
+                            cp = cpPotatoes[(int)(Math.random() * cpPotatoes.length)];
+                            break;
+                        case "Nuts":
+                            cp = cpNuts[(int)(Math.random() * cpNuts.length)];
+                            break;
+                        case "Simsim":
+                            cp = "Simsim";
+                            break;
+                        case "Sunflowers":
+                            cp = cpSunflowers[(int)(Math.random() * cpSunflowers.length)];
+                            break;
+                        case "Brinjals":
+                            cp = "Brinjal/Eggplant";
+                            break;
+                        case "Cabbages":
+                            cp = "Cabbages";
+                            break;
+                        case "Capsicums":
+                            cp = "Capsicums";
+                            break;
+                        case "Carrots":
+                            cp = "Carrots";
+                            break;
+                        case "Cauliflower":
+                            cp = "Cauliflower";
+                            break;
+                        case "Chillies":
+                            cp = "Chillies";
+                            break;
+                        case "Cucumber":
+                            cp = "Cucumber";
+                            break;
+                        case "Ginger":
+                            cp = "Ginger";
+                            break;
+                        case "Kales":
+                            cp = "Kales";
+                            break;
+                        case "Lettuce":
+                            cp = "Lettuce";
+                            break;
+                        case "Onions":
+                            cp = cpOnions[(int)(Math.random() * cpOnions.length)];
+                            break;
+                        case "Tomatoes":
+                            cp = "Tomatoes";
+                            break;
                         default:
                             cp = "Test";
                     }
-                    Item newItem = new Item(category, subCat, cp, nameFaker.lorem().sentence(), (Math.random() * 50.00), (Math.random() * 50.00));
+                    Item newItem = new Item(category, subCat, cp, nameFaker.lorem().sentence(), Math.round((Math.random() * 50.00) * 2000.00) /100.00, Math.round((Math.random() * 1000.00) * 100.00) /100.00);
                     newMarketLocation.getItems().add(newItem);
                 }
                 newUser.getMarketLocations().add(newMarketLocation);
             }
 
+            newUser.getRoles().add(new UserRoles(newUser, r2));
             userService.save(newUser);
         }
     }
