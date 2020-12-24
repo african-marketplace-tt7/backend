@@ -30,14 +30,14 @@ public class MarketLocation extends Auditable{
 
     @ManyToOne
     @JoinColumn(name = "userid")
-    @JsonIgnoreProperties(value = "user", allowSetters = true)
+    @JsonIgnoreProperties(value = {"itemsForSale", "marketLocations"})
     private User user;
 
     @ManyToMany()
-    @JoinTable(name = "marketlocationitem",
+    @JoinTable(name = "marketlocationitems",
             joinColumns = @JoinColumn(name = "marketlocationid"),
             inverseJoinColumns = @JoinColumn(name = "itemid"))
-    @JsonIgnore
+    @JsonIgnoreProperties(value = "user", allowSetters = true)
     private List<Item> items = new ArrayList<>();
 
     public MarketLocation() {
