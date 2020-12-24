@@ -3,6 +3,7 @@ package com.lambdaschool.africanmarketplace.services;
 import com.lambdaschool.africanmarketplace.exceptions.ResourceNotFoundException;
 import com.lambdaschool.africanmarketplace.models.Item;
 import com.lambdaschool.africanmarketplace.models.MarketLocation;
+import com.lambdaschool.africanmarketplace.models.User;
 import com.lambdaschool.africanmarketplace.repository.MarketLocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,15 +21,30 @@ public class MarketLocationServiceImpl implements MarketLocationService{
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private UserService userService;
+
     @Transactional
     @Override
     public MarketLocation save(MarketLocation marketLocation) {
         MarketLocation newMarketLocation = new MarketLocation();
+
+        if(marketLocation.getMarketlocationid() != 0)
+        {
+            marketlocationrepos.findById(marketLocation.getMarketlocationid())
+                    .orElseThrow(() -> new ResourceNotFoundException("Market Location id " + marketLocation.getMarketlocationid() + " not found!"));
+            newMarketLocation.setMarketlocationid(marketLocation.getMarketlocationid());
+        }
+
         newMarketLocation.setName(marketLocation.getName());
         newMarketLocation.setCity(marketLocation.getCity());
         newMarketLocation.setCountry(marketLocation.getCountry());
         newMarketLocation.setStreet(marketLocation.getStreet());
-        newMarketLocation.setUser(marketLocation.getUser());
+
+        User user = userService.findUserById(marketLocation.getUser().getUserid());
+        newMarketLocation.setUser(user);
+
+        newMarketLocation = marketlocationrepos.save(newMarketLocation);
 
 
         for(Item i : marketLocation.getItems())
@@ -42,11 +58,11 @@ public class MarketLocationServiceImpl implements MarketLocationService{
     }
 
     @Override
-    public MarketLocation findByName(String name) {
-        MarketLocation ml = marketlocationrepos.findMarketLocationByName(name);
-        if(ml == null)
+    public List<MarketLocation> findByName(String name) {
+        List<MarketLocation> ml = marketlocationrepos.findAllByName(name);
+        if(ml.size() == 0)
         {
-            throw new ResourceNotFoundException("Market Location" + name + " not found!");
+            throw new ResourceNotFoundException("Market Location " + name + " not found!");
         }
         return ml;
     }

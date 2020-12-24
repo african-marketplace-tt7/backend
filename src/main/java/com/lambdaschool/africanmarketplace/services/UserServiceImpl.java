@@ -122,6 +122,8 @@ public class UserServiceImpl
                     addRole));
         }
 
+        newUser = userrepos.save(newUser);
+
 
         for (MarketLocation ml : user.getMarketLocations())
         {
