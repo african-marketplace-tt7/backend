@@ -218,7 +218,7 @@ public class UserController
     /**
      * Returns the User record for the currently authenticated user based off of the supplied access token
      * <br>Example: <a href="http://localhost:2019/users/getuserinfo">http://localhost:2019/users/getuserinfo</a>
-     *
+     *1
      * @param authentication The authenticated user object provided by Spring Security
      * @return JSON of the current user. Status of OK
      * @see UserService#findByName(String) UserService.findByName(authenticated user)

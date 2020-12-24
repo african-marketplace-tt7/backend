@@ -75,7 +75,7 @@ public class User
     private String preferredCurrency;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties(value = "user", allowSetters = true)
+    @JsonIgnoreProperties(value = {"user", "items"}, allowSetters = true)
     private Set<MarketLocation> marketLocations = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

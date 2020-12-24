@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Transactional
 @Service(value = "marketLocationService")
 public class MarketLocationServiceImpl implements MarketLocationService{
@@ -52,5 +55,12 @@ public class MarketLocationServiceImpl implements MarketLocationService{
     public MarketLocation findById(long id) {
         return marketlocationrepos.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Market with id of " + id + " not found!"));
+    }
+
+    @Override
+    public List<MarketLocation> findAll() {
+        List<MarketLocation> myList = new ArrayList<>();
+        marketlocationrepos.findAll().iterator().forEachRemaining(myList::add);
+        return myList;
     }
 }
