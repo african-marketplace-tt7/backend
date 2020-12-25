@@ -3,6 +3,7 @@ package com.lambdaschool.africanmarketplace.services;
 import com.lambdaschool.africanmarketplace.exceptions.ResourceNotFoundException;
 import com.lambdaschool.africanmarketplace.models.Item;
 import com.lambdaschool.africanmarketplace.models.MarketLocation;
+import com.lambdaschool.africanmarketplace.models.MarketLocationItems;
 import com.lambdaschool.africanmarketplace.models.User;
 import com.lambdaschool.africanmarketplace.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +43,10 @@ public class ItemServiceImpl implements ItemService{
         User user = userService.findUserById(item.getUser().getUserid());
         newItem.setUser(user);
 
-        for(MarketLocation ml : item.getMarketsSold())
+        for(MarketLocationItems mli : item.getMarketsSold())
         {
-            MarketLocation newMarketLocation = marketLocationService.findById(ml.getMarketlocationid());
-            item.getMarketsSold().add(newMarketLocation);
+            MarketLocation newMarketLocation = marketLocationService.findById(mli.getMarketLocation().getMarketlocationid());
+            newItem.getMarketsSold().add(new MarketLocationItems(newMarketLocation, newItem));
         }
         return itemrepos.save(newItem);
     }

@@ -188,8 +188,8 @@ public class SeedData
 
         Item i1 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 10.00, 50.00);
         Item i2 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 20.00, 100.00);
-        mk1.getItems().add(i1);
-        mk1.getItems().add(i2);
+        mk1.getItems().add(new MarketLocationItems(mk1, i1));
+        mk1.getItems().add(new MarketLocationItems(mk1, i2));
 
         u1.getMarketLocations().add(mk1);
         u1.getMarketLocations().add(mk2);
@@ -435,7 +435,7 @@ public class SeedData
                             cp = "Test";
                     }
                     Item newItem = new Item(category, subCat, cp, nameFaker.lorem().sentence(), Math.round((Math.random() * 50.00) * 2000.00) /100.00, Math.round((Math.random() * 1000.00) * 100.00) /100.00);
-                    newMarketLocation.getItems().add(newItem);
+                    newMarketLocation.getItems().add(new MarketLocationItems(newMarketLocation, newItem));
                 }
                 newUser.getMarketLocations().add(newMarketLocation);
             }
