@@ -49,7 +49,7 @@ public class OpenController
      * This endpoint always anyone to create an account with the default role of USER. That role is hardcoded in this method.
      *
      * @param httpServletRequest the request that comes in for creating the new user
-     * @param newminuser         A special minimum set of data that is needed to create a new user
+     * @param user         A special minimum set of data that is needed to create a new user
      * @return The token access and other relevent data to token access. Status of CREATED. The location header to look up the new user.
      * @throws URISyntaxException we create some URIs during this method. If anything goes wrong with that creation, an exception is thrown.
      */
@@ -60,21 +60,27 @@ public class OpenController
         HttpServletRequest httpServletRequest,
         @Valid
         @RequestBody
-            UserMinimum newminuser)
+            User user)
         throws
         URISyntaxException
     {
         // Create the user
         User newuser = new User();
 
-        newuser.setUsername(newminuser.getUsername());
-        newuser.setPassword(newminuser.getPassword());
-        newuser.setEmail(newminuser.getPrimaryemail());
+        newuser.setUsername(user.getUsername());
+        newuser.setPassword(user.getPassword());
+        newuser.setEmail(user.getEmail());
+        newuser.setFirstName(user.getFirstName());
+        newuser.setLastName(user.getLastName());
+        newuser.setCity(user.getCity());
+        newuser.setCountry(user.getCountry());
+        newuser.setPreferredCurrency(user.getPreferredCurrency());
+        newuser.setPrimaryLanguage(user.getPrimaryLanguage());
 
         // add the default role of user
         Set<UserRoles> newRoles = new HashSet<>();
         newRoles.add(new UserRoles(newuser,
-            roleService.findByName("user")));
+            roleService.findByName("USER")));
         newuser.setRoles(newRoles);
 
         newuser = userService.save(newuser);
@@ -108,9 +114,9 @@ public class OpenController
         map.add("scope",
             "read write trust");
         map.add("username",
-            newminuser.getUsername());
+            user.getUsername());
         map.add("password",
-            newminuser.getPassword());
+            user.getPassword());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map,
             headers);

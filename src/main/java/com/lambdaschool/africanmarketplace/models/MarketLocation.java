@@ -33,7 +33,7 @@ public class MarketLocation extends Auditable{
     private User user;
 
     @OneToMany(mappedBy = "marketLocation", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties(value = "user", allowSetters = true)
+    @JsonIgnoreProperties(value = "marketLocation", allowSetters = true)
     private List<MarketLocationItems> items = new ArrayList<>();
 
     public MarketLocation() {

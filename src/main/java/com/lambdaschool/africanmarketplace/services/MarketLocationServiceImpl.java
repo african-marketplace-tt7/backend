@@ -58,6 +58,30 @@ public class MarketLocationServiceImpl implements MarketLocationService{
         return marketlocationrepos.save(newMarketLocation);
     }
 
+    @Transactional
+    @Override
+    public void update(MarketLocation marketLocation, long id) {
+        MarketLocation currentMarketLocation = findById(id);
+
+        if(marketLocation.getName() != null)
+        {
+            currentMarketLocation.setName(marketLocation.getName());
+        }
+        if(marketLocation.getCity() != null)
+        {
+            currentMarketLocation.setCity(marketLocation.getCity());
+        }
+        if(marketLocation.getStreet() != null)
+        {
+            currentMarketLocation.setStreet(marketLocation.getStreet());
+        }
+        if(marketLocation.getCountry() != null)
+        {
+            currentMarketLocation.setCountry(marketLocation.getCountry());
+        }
+        marketlocationrepos.save(currentMarketLocation);
+    }
+
     @Override
     public List<MarketLocation> findByName(String name) {
         List<MarketLocation> ml = marketlocationrepos.findAllByName(name);
@@ -79,5 +103,12 @@ public class MarketLocationServiceImpl implements MarketLocationService{
         List<MarketLocation> myList = new ArrayList<>();
         marketlocationrepos.findAll().iterator().forEachRemaining(myList::add);
         return myList;
+    }
+
+    @Override
+    public void delete(long id) {
+        marketlocationrepos.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Market Location id " + id + " not found!"));
+        marketlocationrepos.deleteByMarketlocationid(id);
     }
 }
