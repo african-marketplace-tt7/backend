@@ -61,17 +61,22 @@ public class User
     @JsonIgnore
     private Set<UserRoles> roles = new HashSet<>();
 
-
+    @NotNull
     private String firstName;
 
+    @NotNull
     private String lastName;
 
+    @NotNull
     private String city;
 
+    @NotNull
     private String country;
 
+    @NotNull
     private String primaryLanguage;
 
+    @NotNull
     private String preferredCurrency;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -85,12 +90,12 @@ public class User
     public User(@NotNull String username,
                 @NotNull String password,
                 @NotNull @Email String email,
-                String firstName,
-                String lastName,
-                String city,
-                String country,
-                String primaryLanguage,
-                String preferredCurrency) {
+                @NotNull String firstName,
+                @NotNull String lastName,
+                @NotNull String city,
+                @NotNull String country,
+                @NotNull String primaryLanguage,
+                @NotNull String preferredCurrency) {
         setUsername(username);
         setPassword(password);
         this.email = email;

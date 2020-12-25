@@ -1,6 +1,5 @@
 package com.lambdaschool.africanmarketplace.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -33,12 +32,9 @@ public class MarketLocation extends Auditable{
     @JsonIgnoreProperties(value = {"itemsForSale", "marketLocations"})
     private User user;
 
-    @ManyToMany()
-    @JoinTable(name = "marketlocationitems",
-            joinColumns = @JoinColumn(name = "marketlocationid"),
-            inverseJoinColumns = @JoinColumn(name = "itemid"))
-    @JsonIgnoreProperties(value = "user", allowSetters = true)
-    private List<Item> items = new ArrayList<>();
+    @OneToMany(mappedBy = "marketLocation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties(value = "marketLocation", allowSetters = true)
+    private List<MarketLocationItems> items = new ArrayList<>();
 
     public MarketLocation() {
     }
@@ -102,11 +98,11 @@ public class MarketLocation extends Auditable{
         this.user = user;
     }
 
-    public List<Item> getItems() {
+    public List<MarketLocationItems> getItems() {
         return items;
     }
 
-    public void setItems(List<Item> items) {
+    public void setItems(List<MarketLocationItems> items) {
         this.items = items;
     }
 }

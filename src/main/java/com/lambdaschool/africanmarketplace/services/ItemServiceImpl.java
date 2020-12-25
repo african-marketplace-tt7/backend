@@ -1,7 +1,10 @@
 package com.lambdaschool.africanmarketplace.services;
 
+import com.lambdaschool.africanmarketplace.exceptions.ResourceNotFoundException;
 import com.lambdaschool.africanmarketplace.models.Item;
 import com.lambdaschool.africanmarketplace.models.MarketLocation;
+import com.lambdaschool.africanmarketplace.models.MarketLocationItems;
+import com.lambdaschool.africanmarketplace.models.User;
 import com.lambdaschool.africanmarketplace.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,20 +18,36 @@ public class ItemServiceImpl implements ItemService{
     @Autowired
     MarketLocationService marketLocationService;
 
+    @Autowired
+    UserService userService;
+
     @Transactional
     @Override
     public Item save(Item item) {
-//        Item newItem = new Item();
-//        newItem.setCommodityCat(item.getCommodityCat());
-//        newItem.setSubCat(item.getSubCat());
-//        newItem.setCommodityProduct(item.getCommodityProduct());
-//        newItem.setSalePrice(item.getSalePrice());
-//        newItem.setDescription(item.getDescription());
-//        newItem.setUser(item.getUser());
-//        for(MarketLocation ml : item.getMarketsSold())
-//        {
-//
-//        }
-        return itemrepos.save(item);
+        Item newItem = new Item();
+
+        if(item.getItemid() != 0)
+        {
+            itemrepos.findById(item.getItemid())
+                    .orElseThrow(() -> new ResourceNotFoundException("Item " + item.getItemid() + " not found!"));
+            newItem.setItemid(item.getItemid());
+        }
+
+        newItem.setCommodityCat(item.getCommodityCat());
+        newItem.setSubCat(item.getSubCat());
+        newItem.setCommodityProduct(item.getCommodityProduct());
+        newItem.setSalePrice(item.getSalePrice());
+        newItem.setDescription(item.getDescription());
+        newItem.setQuantity(item.getQuantity());
+
+        User user = userService.findUserById(item.getUser().getUserid());
+        newItem.setUser(user);
+
+        for(MarketLocationItems mli : item.getMarketsSold())
+        {
+            MarketLocation newMarketLocation = marketLocationService.findById(mli.getMarketLocation().getMarketlocationid());
+            newItem.getMarketsSold().add(new MarketLocationItems(newMarketLocation, newItem));
+        }
+        return itemrepos.save(newItem);
     }
 }

@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface MarketLocationService {
     MarketLocation save (MarketLocation marketLocation);
-    MarketLocation findByName(String name);
+    List<MarketLocation> findByName(String name);
     MarketLocation findById(long id);
     List<MarketLocation> findAll();
+    void update(MarketLocation marketLocation, long id);
+    void delete(long id);
 }
