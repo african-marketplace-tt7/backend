@@ -114,4 +114,10 @@ public class ItemServiceImpl implements ItemService{
                 .orElseThrow(() -> new ResourceNotFoundException("Item id " + id + " not found!"));
         itemrepos.deleteByItemid(id);
     }
+
+    @Override
+    public List<Item> findAllProduct(String product) {
+        List<Item> rtnlist = itemrepos.findAllByCommodityProduct(product);
+        return rtnlist;
+    }
 }
