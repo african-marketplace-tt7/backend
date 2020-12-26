@@ -164,6 +164,36 @@ public class UserServiceImpl
                     .toLowerCase());
             }
 
+            if (user.getFirstName() != null)
+            {
+                currentUser.setFirstName(user.getFirstName());
+            }
+
+            if (user.getLastName() != null)
+            {
+                currentUser.setLastName(user.getLastName());
+            }
+
+            if (user.getCity() != null)
+            {
+                currentUser.setCity(user.getCity());
+            }
+
+            if (user.getCountry() != null)
+            {
+                currentUser.setCountry(user.getCountry());
+            }
+
+            if (user.getPreferredCurrency() != null)
+            {
+                currentUser.setPreferredCurrency(user.getPreferredCurrency());
+            }
+
+            if (user.getPrimaryLanguage() != null)
+            {
+                currentUser.setPrimaryLanguage(user.getPrimaryLanguage());
+            }
+
             if (user.getRoles()
                 .size() > 0)
             {
