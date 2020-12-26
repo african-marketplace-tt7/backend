@@ -79,6 +79,15 @@ public class MarketLocationServiceImpl implements MarketLocationService{
             if (marketLocation.getCountry() != null) {
                 currentMarketLocation.setCountry(marketLocation.getCountry());
             }
+            if (marketLocation.getItems().size() != 0)
+            {
+                currentMarketLocation.getItems().clear();
+                for(MarketLocationItems ml : currentMarketLocation.getItems())
+                {
+                    Item item = itemService.findById(ml.getItem().getItemid());
+                    currentMarketLocation.getItems().add(new MarketLocationItems(currentMarketLocation, item));
+                }
+            }
             marketlocationrepos.save(currentMarketLocation);
         } else
         {

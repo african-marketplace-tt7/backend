@@ -9,6 +9,10 @@ import com.lambdaschool.africanmarketplace.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Transactional
 @Service(value = "itemService")
 public class ItemServiceImpl implements ItemService{
@@ -20,6 +24,9 @@ public class ItemServiceImpl implements ItemService{
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    HelperFunctions helperFunctions;
 
     @Transactional
     @Override
@@ -49,5 +56,62 @@ public class ItemServiceImpl implements ItemService{
             newItem.getMarketsSold().add(new MarketLocationItems(newMarketLocation, newItem));
         }
         return itemrepos.save(newItem);
+    }
+
+    @Override
+    public Item findById(long id) {
+        return itemrepos.findById((id))
+                .orElseThrow(() -> new ResourceNotFoundException("Item with id of " + id + " not found!"));
+    }
+
+    @Override
+    public List<Item> findAll() {
+        List<Item> myList = new ArrayList<>();
+        itemrepos.findAll().iterator().forEachRemaining(myList::add);
+        return myList;
+
+    }
+
+    @Override
+    public void update(Item item, long id) {
+        Item currentItem = findById(id);
+
+        if(helperFunctions.isAuthorizedToMakeChange(currentItem.getUser().getUsername()))
+        {
+            if(item.getCommodityCat() != null){
+                currentItem.setCommodityCat(item.getCommodityCat());
+            }
+            if(item.getSubCat() != null){
+                currentItem.setSubCat(item.getSubCat());
+            }
+            if(item.getCommodityProduct() != null){
+                currentItem.setCommodityProduct(item.getCommodityProduct());
+            }
+            if(item.getDescription() != null){
+                currentItem.setDescription(item.getDescription());
+            }
+            if(item.getQuantity() != 0.0){
+                currentItem.setQuantity(item.getQuantity());
+            }
+            if(item.getSalePrice() != 0.0){
+                currentItem.setSalePrice(item.getSalePrice());
+            }
+            if(item.getMarketsSold().size() != 0){
+                currentItem.getMarketsSold().clear();
+                for(MarketLocationItems ml : item.getMarketsSold())
+                {
+                    MarketLocation marketLocation = marketLocationService.findById(ml.getMarketLocation().getMarketlocationid());
+                    currentItem.getMarketsSold().add( new MarketLocationItems(marketLocation, currentItem));
+                }
+            }
+            itemrepos.save(currentItem);
+        }
+    }
+
+    @Override
+    public void delete(long id) {
+        itemrepos.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Item id " + id + " not found!"));
+        itemrepos.deleteByItemid(id);
     }
 }
