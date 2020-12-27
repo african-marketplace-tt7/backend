@@ -7,6 +7,7 @@ import com.lambdaschool.africanmarketplace.models.MarketLocationItems;
 import com.lambdaschool.africanmarketplace.models.User;
 import com.lambdaschool.africanmarketplace.repository.ItemRepository;
 import com.lambdaschool.africanmarketplace.views.CountryProductAverage;
+import com.lambdaschool.africanmarketplace.views.ProductAverage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -127,7 +128,12 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public List<CountryProductAverage> findAveragePriceByCountry(String country, String commodityProduct) {
-        return itemrepos.findCountryProductAver(country, commodityProduct);
+    public ProductAverage findAveragePrice(String commodityProduct) {
+        return itemrepos.findProductAverage(commodityProduct);
+    }
+
+    @Override
+    public CountryProductAverage findAveragePriceByCountry(String country, String commodityProduct) {
+        return itemrepos.findCountryProductAverage(country, commodityProduct);
     }
 }

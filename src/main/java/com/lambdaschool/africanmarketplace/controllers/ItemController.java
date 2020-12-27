@@ -3,6 +3,7 @@ package com.lambdaschool.africanmarketplace.controllers;
 import com.lambdaschool.africanmarketplace.models.Item;
 import com.lambdaschool.africanmarketplace.services.ItemService;
 import com.lambdaschool.africanmarketplace.views.CountryProductAverage;
+import com.lambdaschool.africanmarketplace.views.ProductAverage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,10 +32,18 @@ public class ItemController {
         Item i = itemService.findById(itemid);
         return new ResponseEntity<>(i, HttpStatus.OK);
     }
-    @GetMapping(value = "/averageprice/{country}/{commodityProduct}", produces = "application/json")
-    public ResponseEntity<?> getAveragePriceByCountry(@PathVariable String country, @PathVariable String commodityProduct)
+
+    @GetMapping(value = "/averageprice/{commodityProduct}", produces = "application/json")
+    public ResponseEntity<?> getAveragePrice(@PathVariable String commodityProduct)
     {
-        List<CountryProductAverage> countryProductAverage = itemService.findAveragePriceByCountry(country, commodityProduct);
+        ProductAverage productAverage = itemService.findAveragePrice(commodityProduct);
+        return new ResponseEntity<>(productAverage, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/averageprice/{commodityProduct}/{country}", produces = "application/json")
+    public ResponseEntity<?> getAveragePriceByCountry(@PathVariable String commodityProduct, @PathVariable String country)
+    {
+        CountryProductAverage countryProductAverage = itemService.findAveragePriceByCountry(country, commodityProduct);
         return new ResponseEntity<>(countryProductAverage, HttpStatus.OK);
     }
 
