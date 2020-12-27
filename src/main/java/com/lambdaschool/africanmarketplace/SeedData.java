@@ -195,7 +195,7 @@ public class SeedData
         u1.getMarketLocations().add(mk2);
         userService.save(u1);
 
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 100; i++)
         {
             String city;
             String country;

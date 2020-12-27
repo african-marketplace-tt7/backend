@@ -30,7 +30,28 @@ public class UserMinimum
      */
     @Email
     @NotNull
-    private String primaryemail;
+    private String email;
+
+    @NotNull
+    private String firstName;
+
+    @NotNull
+    private String lastName;
+
+    @NotNull
+    private String city;
+
+    @NotNull
+    private String country;
+
+    @NotNull
+    private String primaryLanguage;
+
+    @NotNull
+    private String preferredCurrency;
+
+    public UserMinimum() {
+    }
 
     /**
      * Getter for the username
@@ -78,18 +99,66 @@ public class UserMinimum
      *
      * @return the email address (String) for this user
      */
-    public String getPrimaryemail()
+    public String getEmail()
     {
-        return primaryemail;
+        return email;
     }
 
     /**
      * Setter for email for this user
      *
-     * @param primaryemail the new email address (String) for this user.
+     * @param email the new email address (String) for this user.
      */
-    public void setPrimaryemail(String primaryemail)
+    public void setEmail(String email)
     {
-        this.primaryemail = primaryemail;
+        this.email = email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getPrimaryLanguage() {
+        return primaryLanguage;
+    }
+
+    public void setPrimaryLanguage(String primaryLanguage) {
+        this.primaryLanguage = primaryLanguage;
+    }
+
+    public String getPreferredCurrency() {
+        return preferredCurrency;
+    }
+
+    public void setPreferredCurrency(String preferredCurrency) {
+        this.preferredCurrency = preferredCurrency;
     }
 }

@@ -43,13 +43,25 @@ public class MarketLocationController {
     }
 
     /**
+     * Retruns a list of market locations with the given name
+     *
+     * @param marketLocationName
+     * @return JSON list of market locations you seek
+     */
+    @GetMapping(value = "/marketlocation/name/{marketLocationName}", produces = "application/json")
+    public ResponseEntity<?> getMarketLocationsByName(@PathVariable String marketLocationName) {
+        List<MarketLocation> rtnlist = marketLocationService.findByName(marketLocationName);
+        return new ResponseEntity<>(rtnlist, HttpStatus.OK);
+    }
+
+    /**
      * Given a complete Market Location Object, create a new market location record.
      *
      * @param newmarketlocation A Market Location object.
      * @return A location header with the URI to the new created user and a status of CREATED
      */
 
-    @PostMapping(value = "marketlocation", consumes = "application/json")
+    @PostMapping(value = "/marketlocation", consumes = "application/json")
     public ResponseEntity<?> addNewMarketLocation(@Valid @RequestBody MarketLocation newmarketlocation) {
         newmarketlocation.setMarketlocationid(0);
         newmarketlocation = marketLocationService.save(newmarketlocation);
@@ -64,19 +76,7 @@ public class MarketLocationController {
         return new ResponseEntity<>(null, responseHeader, HttpStatus.CREATED);
     }
 
-    /**
-     * Retruns a list of market locations with the given name
-     *
-     * @param marketLocationName
-     * @return JSON list of market locations you seek
-     */
-    @GetMapping(value = "/marketlocation/name/{marketLocationName}", produces = "application/json")
-    public ResponseEntity<?> getMarketLocationsByName(@PathVariable String marketLocationName) {
-        List<MarketLocation> rtnlist = marketLocationService.findByName(marketLocationName);
-        return new ResponseEntity<>(rtnlist, HttpStatus.OK);
-    }
-
-    @PutMapping(value = "marketlocation/{marketlocationid}")
+    @PutMapping(value = "/marketlocation/{marketlocationid}", consumes = "application/json")
     public ResponseEntity<?> updateFullMarketLocation(@Valid @RequestBody MarketLocation updateMarketLocation,
                                                       @PathVariable long marketlocationid) {
         updateMarketLocation.setMarketlocationid(marketlocationid);
@@ -85,7 +85,7 @@ public class MarketLocationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PatchMapping(value = "marketlocation/{marketlocationid}")
+    @PatchMapping(value = "/marketlocation/{marketlocationid}", consumes = "application/json")
     public ResponseEntity<?> updateMarketLocation(@RequestBody MarketLocation updateMarketLocation,
                                                   @PathVariable long marketlocationid)
     {

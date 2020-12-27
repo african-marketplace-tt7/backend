@@ -25,6 +25,9 @@ public class MarketLocationServiceImpl implements MarketLocationService{
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private HelperFunctions helperFunctions;
+
     @Transactional
     @Override
     public MarketLocation save(MarketLocation marketLocation) {
@@ -63,23 +66,35 @@ public class MarketLocationServiceImpl implements MarketLocationService{
     public void update(MarketLocation marketLocation, long id) {
         MarketLocation currentMarketLocation = findById(id);
 
-        if(marketLocation.getName() != null)
+        if(helperFunctions.isAuthorizedToMakeChange(currentMarketLocation.getUser().getUsername())) {
+            if (marketLocation.getName() != null) {
+                currentMarketLocation.setName(marketLocation.getName());
+            }
+            if (marketLocation.getCity() != null) {
+                currentMarketLocation.setCity(marketLocation.getCity());
+            }
+            if (marketLocation.getStreet() != null) {
+                currentMarketLocation.setStreet(marketLocation.getStreet());
+            }
+            if (marketLocation.getCountry() != null) {
+                currentMarketLocation.setCountry(marketLocation.getCountry());
+            }
+            if (marketLocation.getItems().size() != 0)
+            {
+                currentMarketLocation.getItems().clear();
+                for(MarketLocationItems ml : currentMarketLocation.getItems())
+                {
+                    Item item = itemService.findById(ml.getItem().getItemid());
+                    currentMarketLocation.getItems().add(new MarketLocationItems(currentMarketLocation, item));
+                }
+            }
+            marketlocationrepos.save(currentMarketLocation);
+        } else
         {
-            currentMarketLocation.setName(marketLocation.getName());
+            throw new ResourceNotFoundException("This user is not authorized to make change");
         }
-        if(marketLocation.getCity() != null)
-        {
-            currentMarketLocation.setCity(marketLocation.getCity());
-        }
-        if(marketLocation.getStreet() != null)
-        {
-            currentMarketLocation.setStreet(marketLocation.getStreet());
-        }
-        if(marketLocation.getCountry() != null)
-        {
-            currentMarketLocation.setCountry(marketLocation.getCountry());
-        }
-        marketlocationrepos.save(currentMarketLocation);
+
+
     }
 
     @Override
@@ -107,8 +122,10 @@ public class MarketLocationServiceImpl implements MarketLocationService{
 
     @Override
     public void delete(long id) {
-        marketlocationrepos.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Market Location id " + id + " not found!"));
-        marketlocationrepos.deleteByMarketlocationid(id);
+        MarketLocation currentMarketLocation = findById(id);
+        if(helperFunctions.isAuthorizedToMakeChange(currentMarketLocation.getUser().getUsername()))
+        {
+            marketlocationrepos.deleteByMarketlocationid(id);
+        }
     }
 }
