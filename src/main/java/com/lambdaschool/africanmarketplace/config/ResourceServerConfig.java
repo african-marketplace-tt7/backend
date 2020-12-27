@@ -74,6 +74,7 @@ public class ResourceServerConfig
             .hasAnyRole("ADMIN")
             .antMatchers("/users/**",
                 "/marketlocations/**",
+                "/items/**",
                 "/oauth/revoke-token",
                 "/logout")
             .authenticated()

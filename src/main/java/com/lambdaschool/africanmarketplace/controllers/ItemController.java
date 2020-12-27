@@ -2,6 +2,7 @@ package com.lambdaschool.africanmarketplace.controllers;
 
 import com.lambdaschool.africanmarketplace.models.Item;
 import com.lambdaschool.africanmarketplace.services.ItemService;
+import com.lambdaschool.africanmarketplace.views.CountryProductAverage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,12 @@ public class ItemController {
     public ResponseEntity<?> getItemById(@PathVariable long itemid){
         Item i = itemService.findById(itemid);
         return new ResponseEntity<>(i, HttpStatus.OK);
+    }
+    @GetMapping(value = "/averageprice/{country}/{commodityProduct}", produces = "application/json")
+    public ResponseEntity<?> getAveragePriceByCountry(@PathVariable String country, @PathVariable String commodityProduct)
+    {
+        List<CountryProductAverage> countryProductAverage = itemService.findAveragePriceByCountry(country, commodityProduct);
+        return new ResponseEntity<>(countryProductAverage, HttpStatus.OK);
     }
 
     @PostMapping(value = "/item", consumes = "application/json")

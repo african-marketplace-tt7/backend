@@ -6,6 +6,7 @@ import com.lambdaschool.africanmarketplace.models.MarketLocation;
 import com.lambdaschool.africanmarketplace.models.MarketLocationItems;
 import com.lambdaschool.africanmarketplace.models.User;
 import com.lambdaschool.africanmarketplace.repository.ItemRepository;
+import com.lambdaschool.africanmarketplace.views.CountryProductAverage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -105,19 +106,28 @@ public class ItemServiceImpl implements ItemService{
                 }
             }
             itemrepos.save(currentItem);
+        } else
+        {
+            throw new ResourceNotFoundException("This user is not authorized to make change");
         }
     }
 
     @Override
     public void delete(long id) {
-        itemrepos.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Item id " + id + " not found!"));
-        itemrepos.deleteByItemid(id);
+        Item currentItem = findById(id);
+        if(helperFunctions.isAuthorizedToMakeChange(currentItem.getUser().getUsername())) {
+            itemrepos.deleteByItemid(id);
+        }
     }
 
     @Override
     public List<Item> findAllProduct(String product) {
         List<Item> rtnlist = itemrepos.findAllByCommodityProduct(product);
         return rtnlist;
+    }
+
+    @Override
+    public List<CountryProductAverage> findAveragePriceByCountry(String country, String commodityProduct) {
+        return itemrepos.findCountryProductAver(country, commodityProduct);
     }
 }

@@ -122,8 +122,10 @@ public class MarketLocationServiceImpl implements MarketLocationService{
 
     @Override
     public void delete(long id) {
-        marketlocationrepos.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Market Location id " + id + " not found!"));
-        marketlocationrepos.deleteByMarketlocationid(id);
+        MarketLocation currentMarketLocation = findById(id);
+        if(helperFunctions.isAuthorizedToMakeChange(currentMarketLocation.getUser().getUsername()))
+        {
+            marketlocationrepos.deleteByMarketlocationid(id);
+        }
     }
 }

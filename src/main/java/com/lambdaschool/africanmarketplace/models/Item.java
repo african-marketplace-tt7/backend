@@ -25,7 +25,6 @@ public class Item extends Auditable{
     private String commodityProduct;
 
     @NotNull
-    @NotNull
     private String description;
 
     private double salePrice;

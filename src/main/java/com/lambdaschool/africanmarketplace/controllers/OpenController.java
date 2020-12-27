@@ -1,8 +1,8 @@
 package com.lambdaschool.africanmarketplace.controllers;
 
 import com.lambdaschool.africanmarketplace.models.User;
-import com.lambdaschool.africanmarketplace.models.UserRoles;
 import com.lambdaschool.africanmarketplace.models.UserMinimum;
+import com.lambdaschool.africanmarketplace.models.UserRoles;
 import com.lambdaschool.africanmarketplace.services.RoleService;
 import com.lambdaschool.africanmarketplace.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class OpenController
         HttpServletRequest httpServletRequest,
         @Valid
         @RequestBody
-            User user)
+                UserMinimum user)
         throws
         URISyntaxException
     {
