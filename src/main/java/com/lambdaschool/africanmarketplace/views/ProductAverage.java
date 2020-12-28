@@ -1,6 +1,6 @@
 package com.lambdaschool.africanmarketplace.views;
 
 public interface ProductAverage {
-    String getCommodity_product();
+    String getCommodityproduct();
     double getAverageprice();
 }
