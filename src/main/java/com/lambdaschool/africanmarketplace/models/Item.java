@@ -36,7 +36,7 @@ public class Item extends Auditable{
     private List<MarketLocationItems> marketsSold = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "\"user\"")
     @JsonIgnoreProperties(value = "items")
     private User user;
 

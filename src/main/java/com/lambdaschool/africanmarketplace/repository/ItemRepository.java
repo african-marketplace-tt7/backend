@@ -11,7 +11,7 @@ import java.util.List;
 public interface ItemRepository extends CrudRepository<Item, Long> {
     List<Item> findAllByCommodityProduct(String product);
     void deleteByItemid(long id);
-    @Query(value = "SELECT i.commodity_product, ROUND(SUM(sale_price) / SUM(quantity), 2) AS averageprice " +
+    @Query(value = "SELECT i.commodity_product, ROUND((SUM(sale_price) / SUM(quantity))::numeric, 2) AS averageprice " +
             "FROM items i " +
             "WHERE i.commodity_product = :commodityProduct " +
             "GROUP BY i.commodity_product", nativeQuery = true)
