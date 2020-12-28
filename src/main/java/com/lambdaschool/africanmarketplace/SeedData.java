@@ -7,6 +7,7 @@ import com.lambdaschool.africanmarketplace.services.UserService;
 import com.lambdaschool.africanmarketplace.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,11 @@ import java.util.Locale;
  * after the application context has been loaded.
  */
 @Transactional
+@ConditionalOnProperty(
+        prefix = "command.line.runner",
+        value = "enabled",
+        havingValue = "true",
+        matchIfMissing = true)
 @Component
 public class SeedData
     implements CommandLineRunner
@@ -195,7 +201,7 @@ public class SeedData
         u1.getMarketLocations().add(mk2);
         userService.save(u1);
 
-        for(int i = 0; i < 100; i++)
+        for(int i = 0; i < 500; i++)
         {
             String city;
             String country;
