@@ -171,6 +171,7 @@ public class SeedData
 
         userService.deleteAll();
         roleService.deleteAll();
+
         Role r1 = new Role("ADMIN");
         Role r2 = new Role("USER");
 
