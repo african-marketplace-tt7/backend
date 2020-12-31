@@ -210,6 +210,17 @@ public class UserServiceImpl
                 }
             }
 
+            if(user.getMarketLocations().size() > 0)
+            {
+                currentUser.getMarketLocations().clear();
+                for (MarketLocation ml : user.getMarketLocations())
+                {
+                    ml.setUser(currentUser);
+                    MarketLocation newMarketLocation = marketLocationService.save(ml);
+                    currentUser.getMarketLocations().add(newMarketLocation);
+                }
+            }
+
             return userrepos.save(currentUser);
         } else
         {
