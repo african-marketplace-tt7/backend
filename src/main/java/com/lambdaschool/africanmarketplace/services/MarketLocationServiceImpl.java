@@ -50,7 +50,7 @@ public class MarketLocationServiceImpl implements MarketLocationService{
 
         newMarketLocation = marketlocationrepos.save(newMarketLocation);
 
-
+        newMarketLocation.getItems().clear();
         for(MarketLocationItems mli : marketLocation.getItems())
         {
             mli.getItem().setUser(newMarketLocation.getUser());
