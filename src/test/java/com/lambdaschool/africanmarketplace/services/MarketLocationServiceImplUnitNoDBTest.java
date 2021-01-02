@@ -43,6 +43,7 @@ public class MarketLocationServiceImplUnitNoDBTest {
 
     List<MarketLocation> marketLocationList = new ArrayList<>();
     List<User> userList = new ArrayList<>();
+    List<Item> itemList = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception {
@@ -76,6 +77,9 @@ public class MarketLocationServiceImplUnitNoDBTest {
 
         i1.setItemid(1);
         i2.setItemid(2);
+
+        itemList.add(i1);
+        itemList.add(i2);
 
         mk1.getItems().add(new MarketLocationItems(mk1, i1));
         mk1.getItems().add(new MarketLocationItems(mk1, i2));
@@ -177,6 +181,52 @@ public class MarketLocationServiceImplUnitNoDBTest {
 
     }
 
+    @Test(expected = ResourceNotFoundException.class)
+    public void saveUserNotFound() {
+        Role r1 = new Role("ADMIN");
+        Role r2 = new Role("USER");
+
+        r1.setRoleid(1);
+        r2.setRoleid(2);
+
+        User u1 = new User("admin",
+                "password",
+                "admin@gmail.com",
+                "Test Fname",
+                "Test Lname",
+                "New York",
+                "USA",
+                "English",
+                "USD");
+        u1.setUserid(1);
+        u1.getRoles().add(new UserRoles(u1, r1));
+        u1.getRoles().add(new UserRoles(u1, r2));
+
+        MarketLocation mk1 = new MarketLocation("Test Market 1", "Main Street", "New York", "USA");
+        mk1.setMarketlocationid(1);
+        mk1.setUser(u1);
+        Item i1 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 10.00, 50.00);
+        mk1.getItems().add(new MarketLocationItems(mk1, i1));
+
+        Mockito.when(marketlocationrepos.findById(1L))
+                .thenReturn(Optional.empty());
+
+        Mockito.when(userService.findUserById(1L))
+                .thenReturn(u1);
+
+        Mockito.when(marketlocationrepos.save(any(MarketLocation.class)))
+                .thenReturn(mk1);
+
+        Mockito.when(itemService.save(any(Item.class)))
+                .thenReturn(i1);
+
+        MarketLocation newMarketLocation = marketLocationService.save(mk1);
+
+        assertNotNull(newMarketLocation);
+        assertEquals(mk1.getName(), newMarketLocation.getName());
+
+    }
+
     @Test
     public void savePut() {
         Role r1 = new Role("ADMIN");
@@ -226,6 +276,143 @@ public class MarketLocationServiceImplUnitNoDBTest {
 
     @Test
     public void update() {
+        Role r1 = new Role("ADMIN");
+        Role r2 = new Role("USER");
+
+        r1.setRoleid(1);
+        r2.setRoleid(2);
+
+        User u1 = new User("admin",
+                "password",
+                "admin@gmail.com",
+                "Test Fname",
+                "Test Lname",
+                "New York",
+                "USA",
+                "English",
+                "USD");
+        u1.setUserid(1);
+        u1.getRoles().add(new UserRoles(u1, r1));
+        u1.getRoles().add(new UserRoles(u1, r2));
+
+        MarketLocation mk1 = new MarketLocation("Test Market 1", "Main Street", "New York", "USA");
+        mk1.setMarketlocationid(1);
+        mk1.setUser(u1);
+        Item i1 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 10.00, 50.00);
+        i1.setItemid(1);
+        mk1.getItems().add(new MarketLocationItems(mk1, i1));
+
+        Mockito.when(marketlocationrepos.findById(1L))
+                .thenReturn(Optional.of(mk1));
+
+        Mockito.when(helperFunctions.isAuthorizedToMakeChange(mk1.getUser().getUsername()))
+                .thenReturn(true);
+
+        Mockito.when(itemService.findById(1L))
+                .thenReturn(i1);
+
+        Mockito.when(marketlocationrepos.save(any(MarketLocation.class)))
+                .thenReturn(mk1);
+
+        MarketLocation updatedMarketLocation = marketLocationService.update(mk1, 1);
+
+        assertNotNull(updatedMarketLocation);
+        assertEquals(mk1.getName(), updatedMarketLocation.getName());
+
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void updateNotFound() {
+        Role r1 = new Role("ADMIN");
+        Role r2 = new Role("USER");
+
+        r1.setRoleid(1);
+        r2.setRoleid(2);
+
+        User u1 = new User("admin",
+                "password",
+                "admin@gmail.com",
+                "Test Fname",
+                "Test Lname",
+                "New York",
+                "USA",
+                "English",
+                "USD");
+        u1.setUserid(1);
+        u1.getRoles().add(new UserRoles(u1, r1));
+        u1.getRoles().add(new UserRoles(u1, r2));
+
+        MarketLocation mk1 = new MarketLocation("Test Market 1", "Main Street", "New York", "USA");
+        mk1.setMarketlocationid(1);
+        mk1.setUser(u1);
+        Item i1 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 10.00, 50.00);
+        i1.setItemid(1);
+        mk1.getItems().add(new MarketLocationItems(mk1, i1));
+
+        Mockito.when(marketlocationrepos.findById(1L))
+                .thenReturn(Optional.empty());
+
+        Mockito.when(helperFunctions.isAuthorizedToMakeChange(mk1.getUser().getUsername()))
+                .thenReturn(true);
+
+        Mockito.when(itemService.findById(1L))
+                .thenReturn(i1);
+
+        Mockito.when(marketlocationrepos.save(any(MarketLocation.class)))
+                .thenReturn(mk1);
+
+        MarketLocation updatedMarketLocation = marketLocationService.update(mk1, 1);
+
+        assertNotNull(updatedMarketLocation);
+        assertEquals(mk1.getName(), updatedMarketLocation.getName());
+
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void updateNotAuthorized() {
+        Role r1 = new Role("ADMIN");
+        Role r2 = new Role("USER");
+
+        r1.setRoleid(1);
+        r2.setRoleid(2);
+
+        User u1 = new User("admin",
+                "password",
+                "admin@gmail.com",
+                "Test Fname",
+                "Test Lname",
+                "New York",
+                "USA",
+                "English",
+                "USD");
+        u1.setUserid(1);
+        u1.getRoles().add(new UserRoles(u1, r1));
+        u1.getRoles().add(new UserRoles(u1, r2));
+
+        MarketLocation mk1 = new MarketLocation("Test Market 1", "Main Street", "New York", "USA");
+        mk1.setMarketlocationid(1);
+        mk1.setUser(u1);
+        Item i1 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 10.00, 50.00);
+        i1.setItemid(1);
+        mk1.getItems().add(new MarketLocationItems(mk1, i1));
+
+        Mockito.when(marketlocationrepos.findById(1L))
+                .thenReturn(Optional.of(mk1));
+
+        Mockito.when(helperFunctions.isAuthorizedToMakeChange(mk1.getUser().getUsername()))
+                .thenReturn(false);
+
+        Mockito.when(itemService.findById(1L))
+                .thenReturn(i1);
+
+        Mockito.when(marketlocationrepos.save(any(MarketLocation.class)))
+                .thenReturn(mk1);
+
+        MarketLocation updatedMarketLocation = marketLocationService.update(mk1, 1);
+
+        assertNotNull(updatedMarketLocation);
+        assertEquals(mk1.getName(), updatedMarketLocation.getName());
+
     }
 
     @Test

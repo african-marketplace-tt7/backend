@@ -63,7 +63,7 @@ public class MarketLocationServiceImpl implements MarketLocationService{
 
     @Transactional
     @Override
-    public void update(MarketLocation marketLocation, long id) {
+    public MarketLocation update(MarketLocation marketLocation, long id) {
         MarketLocation currentMarketLocation = findById(id);
 
         if(helperFunctions.isAuthorizedToMakeChange(currentMarketLocation.getUser().getUsername())) {
@@ -88,7 +88,7 @@ public class MarketLocationServiceImpl implements MarketLocationService{
                     currentMarketLocation.getItems().add(new MarketLocationItems(currentMarketLocation, item));
                 }
             }
-            marketlocationrepos.save(currentMarketLocation);
+            return marketlocationrepos.save(currentMarketLocation);
         } else
         {
             throw new ResourceNotFoundException("This user is not authorized to make change");

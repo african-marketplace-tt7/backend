@@ -19,16 +19,16 @@ import java.util.List;
 @Service(value = "itemService")
 public class ItemServiceImpl implements ItemService{
     @Autowired
-    ItemRepository itemrepos;
+    private ItemRepository itemrepos;
 
     @Autowired
-    MarketLocationService marketLocationService;
+    private MarketLocationService marketLocationService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    HelperFunctions helperFunctions;
+    private HelperFunctions helperFunctions;
 
     @Transactional
     @Override
@@ -75,7 +75,7 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public void update(Item item, long id) {
+    public Item update(Item item, long id) {
         Item currentItem = findById(id);
 
         if(helperFunctions.isAuthorizedToMakeChange(currentItem.getUser().getUsername()))
@@ -106,7 +106,7 @@ public class ItemServiceImpl implements ItemService{
                     currentItem.getMarketsSold().add( new MarketLocationItems(marketLocation, currentItem));
                 }
             }
-            itemrepos.save(currentItem);
+            return itemrepos.save(currentItem);
         } else
         {
             throw new ResourceNotFoundException("This user is not authorized to make change");

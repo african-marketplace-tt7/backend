@@ -9,6 +9,6 @@ public interface MarketLocationService {
     List<MarketLocation> findByName(String name);
     MarketLocation findById(long id);
     List<MarketLocation> findAll();
-    void update(MarketLocation marketLocation, long id);
+    MarketLocation update(MarketLocation marketLocation, long id);
     void delete(long id);
 }

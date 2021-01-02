@@ -13,6 +13,6 @@ public interface ItemService {
     List<Item> findAllProduct(String product);
     ProductAverage findAveragePrice(String commodityProduct);
     CountryProductAverage findAveragePriceByCountry(String country, String commodityProduct);
-    void update(Item item, long id);
+    Item update(Item item, long id);
     void delete(long id);
 }
