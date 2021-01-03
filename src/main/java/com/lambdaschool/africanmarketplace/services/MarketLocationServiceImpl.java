@@ -4,7 +4,6 @@ import com.lambdaschool.africanmarketplace.exceptions.ResourceNotFoundException;
 import com.lambdaschool.africanmarketplace.models.Item;
 import com.lambdaschool.africanmarketplace.models.MarketLocation;
 import com.lambdaschool.africanmarketplace.models.MarketLocationItems;
-import com.lambdaschool.africanmarketplace.models.User;
 import com.lambdaschool.africanmarketplace.repository.MarketLocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +20,6 @@ public class MarketLocationServiceImpl implements MarketLocationService{
 
     @Autowired
     private ItemService itemService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private HelperFunctions helperFunctions;
@@ -44,13 +40,11 @@ public class MarketLocationServiceImpl implements MarketLocationService{
         newMarketLocation.setCity(marketLocation.getCity());
         newMarketLocation.setCountry(marketLocation.getCountry());
         newMarketLocation.setStreet(marketLocation.getStreet());
-
-        User user = userService.findUserById(marketLocation.getUser().getUserid());
-        newMarketLocation.setUser(user);
+        newMarketLocation.setUser(marketLocation.getUser());
 
         newMarketLocation = marketlocationrepos.save(newMarketLocation);
 
-
+        newMarketLocation.getItems().clear();
         for(MarketLocationItems mli : marketLocation.getItems())
         {
             mli.getItem().setUser(newMarketLocation.getUser());
@@ -63,7 +57,7 @@ public class MarketLocationServiceImpl implements MarketLocationService{
 
     @Transactional
     @Override
-    public void update(MarketLocation marketLocation, long id) {
+    public MarketLocation update(MarketLocation marketLocation, long id) {
         MarketLocation currentMarketLocation = findById(id);
 
         if(helperFunctions.isAuthorizedToMakeChange(currentMarketLocation.getUser().getUsername())) {
@@ -88,7 +82,7 @@ public class MarketLocationServiceImpl implements MarketLocationService{
                     currentMarketLocation.getItems().add(new MarketLocationItems(currentMarketLocation, item));
                 }
             }
-            marketlocationrepos.save(currentMarketLocation);
+            return marketlocationrepos.save(currentMarketLocation);
         } else
         {
             throw new ResourceNotFoundException("This user is not authorized to make change");

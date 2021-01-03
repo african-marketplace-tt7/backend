@@ -1,11 +1,14 @@
 package com.lambdaschool.africanmarketplace.controllers;
 
 import com.lambdaschool.africanmarketplace.models.MarketLocation;
+import com.lambdaschool.africanmarketplace.models.User;
 import com.lambdaschool.africanmarketplace.services.MarketLocationService;
+import com.lambdaschool.africanmarketplace.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -18,6 +21,9 @@ import java.util.List;
 public class MarketLocationController {
     @Autowired
     private MarketLocationService marketLocationService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * Returns a list of all market locations
@@ -62,7 +68,9 @@ public class MarketLocationController {
      */
 
     @PostMapping(value = "/marketlocation", consumes = "application/json")
-    public ResponseEntity<?> addNewMarketLocation(@Valid @RequestBody MarketLocation newmarketlocation) {
+    public ResponseEntity<?> addNewMarketLocation(@Valid @RequestBody MarketLocation newmarketlocation, Authentication authentication) {
+        User user = userService.findByName(authentication.getName());
+        newmarketlocation.setUser(user);
         newmarketlocation.setMarketlocationid(0);
         newmarketlocation = marketLocationService.save(newmarketlocation);
 
@@ -73,24 +81,24 @@ public class MarketLocationController {
                 .toUri();
         responseHeader.setLocation(newUserURI);
 
-        return new ResponseEntity<>(null, responseHeader, HttpStatus.CREATED);
+        return new ResponseEntity<>(newmarketlocation, responseHeader, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/marketlocation/{marketlocationid}", consumes = "application/json")
     public ResponseEntity<?> updateFullMarketLocation(@Valid @RequestBody MarketLocation updateMarketLocation,
                                                       @PathVariable long marketlocationid) {
         updateMarketLocation.setMarketlocationid(marketlocationid);
-        marketLocationService.save(updateMarketLocation);
+        updateMarketLocation = marketLocationService.save(updateMarketLocation);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(updateMarketLocation, HttpStatus.OK);
     }
 
     @PatchMapping(value = "/marketlocation/{marketlocationid}", consumes = "application/json")
     public ResponseEntity<?> updateMarketLocation(@RequestBody MarketLocation updateMarketLocation,
                                                   @PathVariable long marketlocationid)
     {
-        marketLocationService.update(updateMarketLocation, marketlocationid);
-        return new ResponseEntity<>(HttpStatus.OK);
+        updateMarketLocation = marketLocationService.update(updateMarketLocation, marketlocationid);
+        return new ResponseEntity<>(updateMarketLocation, HttpStatus.OK);
     }
 
     @DeleteMapping("/marketlocation/{marketlocationid}")
