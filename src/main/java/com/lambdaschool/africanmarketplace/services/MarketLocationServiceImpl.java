@@ -4,7 +4,6 @@ import com.lambdaschool.africanmarketplace.exceptions.ResourceNotFoundException;
 import com.lambdaschool.africanmarketplace.models.Item;
 import com.lambdaschool.africanmarketplace.models.MarketLocation;
 import com.lambdaschool.africanmarketplace.models.MarketLocationItems;
-import com.lambdaschool.africanmarketplace.models.User;
 import com.lambdaschool.africanmarketplace.repository.MarketLocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +20,6 @@ public class MarketLocationServiceImpl implements MarketLocationService{
 
     @Autowired
     private ItemService itemService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private HelperFunctions helperFunctions;
@@ -44,9 +40,7 @@ public class MarketLocationServiceImpl implements MarketLocationService{
         newMarketLocation.setCity(marketLocation.getCity());
         newMarketLocation.setCountry(marketLocation.getCountry());
         newMarketLocation.setStreet(marketLocation.getStreet());
-
-        User user = userService.findUserById(marketLocation.getUser().getUserid());
-        newMarketLocation.setUser(user);
+        newMarketLocation.setUser(marketLocation.getUser());
 
         newMarketLocation = marketlocationrepos.save(newMarketLocation);
 

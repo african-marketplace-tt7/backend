@@ -4,7 +4,6 @@ import com.lambdaschool.africanmarketplace.exceptions.ResourceNotFoundException;
 import com.lambdaschool.africanmarketplace.models.Item;
 import com.lambdaschool.africanmarketplace.models.MarketLocation;
 import com.lambdaschool.africanmarketplace.models.MarketLocationItems;
-import com.lambdaschool.africanmarketplace.models.User;
 import com.lambdaschool.africanmarketplace.repository.ItemRepository;
 import com.lambdaschool.africanmarketplace.views.CountryProductAverage;
 import com.lambdaschool.africanmarketplace.views.ProductAverage;
@@ -23,9 +22,6 @@ public class ItemServiceImpl implements ItemService{
 
     @Autowired
     private MarketLocationService marketLocationService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private HelperFunctions helperFunctions;
@@ -48,9 +44,7 @@ public class ItemServiceImpl implements ItemService{
         newItem.setSalePrice(item.getSalePrice());
         newItem.setDescription(item.getDescription());
         newItem.setQuantity(item.getQuantity());
-
-        User user = userService.findUserById(item.getUser().getUserid());
-        newItem.setUser(user);
+        newItem.setUser(item.getUser());
 
         for(MarketLocationItems mli : item.getMarketsSold())
         {

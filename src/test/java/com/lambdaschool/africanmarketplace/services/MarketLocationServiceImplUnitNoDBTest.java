@@ -44,6 +44,7 @@ public class MarketLocationServiceImplUnitNoDBTest {
     List<MarketLocation> marketLocationList = new ArrayList<>();
     List<User> userList = new ArrayList<>();
     List<Item> itemList = new ArrayList<>();
+    List<Role> roleList = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception {
@@ -52,6 +53,9 @@ public class MarketLocationServiceImplUnitNoDBTest {
 
         r1.setRoleid(1);
         r2.setRoleid(2);
+
+        roleList.add(r1);
+        roleList.add(r2);
 
         User u1 = new User("admin",
                 "password",
@@ -140,24 +144,7 @@ public class MarketLocationServiceImplUnitNoDBTest {
 
     @Test
     public void save() {
-        Role r1 = new Role("ADMIN");
-        Role r2 = new Role("USER");
-
-        r1.setRoleid(1);
-        r2.setRoleid(2);
-
-        User u1 = new User("admin",
-                "password",
-                "admin@gmail.com",
-                "Test Fname",
-                "Test Lname",
-                "New York",
-                "USA",
-                "English",
-                "USD");
-        u1.setUserid(1);
-        u1.getRoles().add(new UserRoles(u1, r1));
-        u1.getRoles().add(new UserRoles(u1, r2));
+        User u1 = userList.get(0);
 
         MarketLocation mk1 = new MarketLocation("Test Market 1", "Main Street", "New York", "USA");
         mk1.setMarketlocationid(0);
@@ -183,24 +170,7 @@ public class MarketLocationServiceImplUnitNoDBTest {
 
     @Test(expected = ResourceNotFoundException.class)
     public void saveUserNotFound() {
-        Role r1 = new Role("ADMIN");
-        Role r2 = new Role("USER");
-
-        r1.setRoleid(1);
-        r2.setRoleid(2);
-
-        User u1 = new User("admin",
-                "password",
-                "admin@gmail.com",
-                "Test Fname",
-                "Test Lname",
-                "New York",
-                "USA",
-                "English",
-                "USD");
-        u1.setUserid(1);
-        u1.getRoles().add(new UserRoles(u1, r1));
-        u1.getRoles().add(new UserRoles(u1, r2));
+        User u1 = userList.get(0);
 
         MarketLocation mk1 = new MarketLocation("Test Market 1", "Main Street", "New York", "USA");
         mk1.setMarketlocationid(1);
@@ -229,30 +199,12 @@ public class MarketLocationServiceImplUnitNoDBTest {
 
     @Test
     public void savePut() {
-        Role r1 = new Role("ADMIN");
-        Role r2 = new Role("USER");
-
-        r1.setRoleid(1);
-        r2.setRoleid(2);
-
-        User u1 = new User("admin",
-                "password",
-                "admin@gmail.com",
-                "Test Fname",
-                "Test Lname",
-                "New York",
-                "USA",
-                "English",
-                "USD");
-        u1.setUserid(1);
-        u1.getRoles().add(new UserRoles(u1, r1));
-        u1.getRoles().add(new UserRoles(u1, r2));
+        User u1 = userList.get(0);
 
         MarketLocation mk1 = new MarketLocation("Test Market 1", "Main Street", "New York", "USA");
         mk1.setMarketlocationid(1);
         mk1.setUser(u1);
         Item i1 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 10.00, 50.00);
-        i1.setItemid(0);
         mk1.getItems().add(new MarketLocationItems(mk1, i1));
 
         Mockito.when(marketlocationrepos.findById(1L))
@@ -276,30 +228,12 @@ public class MarketLocationServiceImplUnitNoDBTest {
 
     @Test
     public void update() {
-        Role r1 = new Role("ADMIN");
-        Role r2 = new Role("USER");
-
-        r1.setRoleid(1);
-        r2.setRoleid(2);
-
-        User u1 = new User("admin",
-                "password",
-                "admin@gmail.com",
-                "Test Fname",
-                "Test Lname",
-                "New York",
-                "USA",
-                "English",
-                "USD");
-        u1.setUserid(1);
-        u1.getRoles().add(new UserRoles(u1, r1));
-        u1.getRoles().add(new UserRoles(u1, r2));
+        User u1 = userList.get(0);
 
         MarketLocation mk1 = new MarketLocation("Test Market 1", "Main Street", "New York", "USA");
         mk1.setMarketlocationid(1);
         mk1.setUser(u1);
         Item i1 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 10.00, 50.00);
-        i1.setItemid(1);
         mk1.getItems().add(new MarketLocationItems(mk1, i1));
 
         Mockito.when(marketlocationrepos.findById(1L))
@@ -323,30 +257,12 @@ public class MarketLocationServiceImplUnitNoDBTest {
 
     @Test(expected = ResourceNotFoundException.class)
     public void updateNotFound() {
-        Role r1 = new Role("ADMIN");
-        Role r2 = new Role("USER");
-
-        r1.setRoleid(1);
-        r2.setRoleid(2);
-
-        User u1 = new User("admin",
-                "password",
-                "admin@gmail.com",
-                "Test Fname",
-                "Test Lname",
-                "New York",
-                "USA",
-                "English",
-                "USD");
-        u1.setUserid(1);
-        u1.getRoles().add(new UserRoles(u1, r1));
-        u1.getRoles().add(new UserRoles(u1, r2));
+        User u1 = userList.get(0);
 
         MarketLocation mk1 = new MarketLocation("Test Market 1", "Main Street", "New York", "USA");
         mk1.setMarketlocationid(1);
         mk1.setUser(u1);
         Item i1 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 10.00, 50.00);
-        i1.setItemid(1);
         mk1.getItems().add(new MarketLocationItems(mk1, i1));
 
         Mockito.when(marketlocationrepos.findById(1L))
@@ -370,30 +286,12 @@ public class MarketLocationServiceImplUnitNoDBTest {
 
     @Test(expected = ResourceNotFoundException.class)
     public void updateNotAuthorized() {
-        Role r1 = new Role("ADMIN");
-        Role r2 = new Role("USER");
-
-        r1.setRoleid(1);
-        r2.setRoleid(2);
-
-        User u1 = new User("admin",
-                "password",
-                "admin@gmail.com",
-                "Test Fname",
-                "Test Lname",
-                "New York",
-                "USA",
-                "English",
-                "USD");
-        u1.setUserid(1);
-        u1.getRoles().add(new UserRoles(u1, r1));
-        u1.getRoles().add(new UserRoles(u1, r2));
+        User u1 = userList.get(0);
 
         MarketLocation mk1 = new MarketLocation("Test Market 1", "Main Street", "New York", "USA");
         mk1.setMarketlocationid(1);
         mk1.setUser(u1);
         Item i1 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 10.00, 50.00);
-        i1.setItemid(1);
         mk1.getItems().add(new MarketLocationItems(mk1, i1));
 
         Mockito.when(marketlocationrepos.findById(1L))
