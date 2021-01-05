@@ -38,6 +38,8 @@ public class UserServiceImplUnitNoDBTest {
     @MockBean
     private RoleService roleService;
 
+    @MockBean ItemService itemService;
+
     @MockBean
     private HelperFunctions helperFunctions;
 
@@ -275,8 +277,11 @@ public class UserServiceImplUnitNoDBTest {
 
         Mockito.when(marketLocationService.save(any(MarketLocation.class)))
                 .thenReturn(mk1);
+        Mockito.when(itemService.save(any(Item.class)))
+                .thenReturn(itemList.get(0));
         Mockito.when(userrepos.save(any(User.class)))
                 .thenReturn(u1);
+
 
         User addUser = userService.save(u1);
         assertNotNull(addUser);
@@ -312,6 +317,10 @@ public class UserServiceImplUnitNoDBTest {
 
         Mockito.when(marketLocationService.save(any(MarketLocation.class)))
                 .thenReturn(mk1);
+
+        Mockito.when(itemService.save(any(Item.class)))
+                .thenReturn(itemList.get(0));
+
         Mockito.when(userrepos.save(any(User.class)))
                 .thenReturn(u1);
 
@@ -353,6 +362,9 @@ public class UserServiceImplUnitNoDBTest {
         Mockito.when(marketLocationService.save(any(MarketLocation.class)))
                 .thenReturn(mk1);
 
+        Mockito.when(itemService.save(any(Item.class)))
+                .thenReturn(itemList.get(0));
+
         Mockito.when(userrepos.save(any(User.class)))
                 .thenReturn(u1);
 
@@ -393,6 +405,10 @@ public class UserServiceImplUnitNoDBTest {
                 .thenReturn(r1);
         Mockito.when(marketLocationService.save(any(MarketLocation.class)))
                 .thenReturn(mk1);
+
+        Mockito.when(itemService.save(any(Item.class)))
+                .thenReturn(itemList.get(0));
+
         Mockito.when(userrepos.save(any(User.class)))
                 .thenReturn(u1);
 
