@@ -237,13 +237,25 @@ public class UserController
             HttpStatus.OK);
     }
 
-    @PostMapping(value = "/user/{userid}/photo")
-    public ResponseEntity<?> addPhoto(@RequestPart(value = "photo")MultipartFile photo, @PathVariable long userid) throws Exception
+    @PostMapping(value = "/user/photo", produces = "application/json")
+    public ResponseEntity<?> addPhoto(@RequestPart(value = "photo")MultipartFile photo, Authentication authentication) throws Exception
     {
-        User user = new User();
+        User user = userService.findByName(authentication.getName());
         String photoURL = amazonClient.uploadFile(photo);
         user.setPhotoURL(photoURL);
-        user = userService.update(user, userid);
+        user = userService.save(user);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/user/photo", produces = "application/json")
+    public ResponseEntity<?> deletePhoto(Authentication authentication)
+    {
+        User user = userService.findByName(authentication.getName());
+        amazonClient.deleteFileFromS3Bucket(user.getPhotoURL());
+        user.setPhotoURL(null);
+        System.out.println(user);
+        user = userService.save(user);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

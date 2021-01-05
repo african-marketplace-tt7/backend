@@ -22,9 +22,9 @@ public class AmazonClient {
     private String endpointUrl;
     @Value("${s3.bucketName}")
     private String bucketName;
-    @Value("${s3.accessKeyId}")
+    @Value("${S3ACCESSKEYID}")
     private String accessKeyId;
-    @Value("${s3.secretKey}")
+    @Value("${S3SECRETKEY}")
     private String secretKey;
     @Value("${s3.region}")
     private String region;
@@ -40,11 +40,9 @@ public class AmazonClient {
     }
     public String uploadFile(MultipartFile multipartFile)
             throws Exception {
-        String fileUrl = "";
         File file = convertMultiPartToFile(multipartFile);
         String fileName = generateFileName(multipartFile);
-//        fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
-        fileUrl = "https://" + bucketName + ".s3." + region + endpointUrl + "/" + fileName;
+        String fileUrl = "https://" + bucketName + ".s3." + region + endpointUrl + "/" + fileName;
         uploadFileTos3bucket(fileName, file);
         file.delete();
         return fileUrl;
