@@ -110,6 +110,7 @@ public class UserServiceImpl
         newUser.setCountry(user.getCountry());
         newUser.setPreferredCurrency(user.getPreferredCurrency());
         newUser.setPrimaryLanguage(user.getPrimaryLanguage());
+        newUser.setPhotoURL(user.getPhotoURL());
 
         newUser.getRoles()
             .clear();
@@ -192,6 +193,11 @@ public class UserServiceImpl
             if (user.getPrimaryLanguage() != null)
             {
                 currentUser.setPrimaryLanguage(user.getPrimaryLanguage());
+            }
+
+            if(user.getPhotoURL() != null)
+            {
+                currentUser.setPhotoURL(user.getPhotoURL());
             }
 
             if (user.getRoles()

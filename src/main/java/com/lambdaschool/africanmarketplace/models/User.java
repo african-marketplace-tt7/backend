@@ -79,6 +79,8 @@ public class User
     @NotNull
     private String preferredCurrency;
 
+    private String photoURL;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(value = {"user", "items"}, allowSetters = true)
     private Set<MarketLocation> marketLocations = new HashSet<>();
@@ -298,6 +300,14 @@ public class User
         this.itemsForSale = itemsForSale;
     }
 
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
+    }
+
     /**
      * Internally, user security requires a list of authorities, roles, that the user has. This method is a simple way to provide those.
      * Note that SimpleGrantedAuthority requests the format ROLE_role name all in capital letters!
@@ -318,5 +328,25 @@ public class User
         }
 
         return rtnList;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userid=" + userid +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", roles=" + roles +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", primaryLanguage='" + primaryLanguage + '\'' +
+                ", preferredCurrency='" + preferredCurrency + '\'' +
+                ", photoURL='" + photoURL + '\'' +
+                ", marketLocations=" + marketLocations +
+                ", itemsForSale=" + itemsForSale +
+                '}';
     }
 }

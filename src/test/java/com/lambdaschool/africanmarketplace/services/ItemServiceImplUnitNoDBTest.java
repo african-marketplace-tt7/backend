@@ -4,7 +4,6 @@ import com.lambdaschool.africanmarketplace.AfricanMarketplaceApplicationTest;
 import com.lambdaschool.africanmarketplace.exceptions.ResourceNotFoundException;
 import com.lambdaschool.africanmarketplace.models.*;
 import com.lambdaschool.africanmarketplace.repository.ItemRepository;
-import com.lambdaschool.africanmarketplace.views.ProductAverage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -146,48 +145,15 @@ public class ItemServiceImplUnitNoDBTest {
 
     @Test
     public void save() {
-        Role r1 = new Role("ADMIN");
-        Role r2 = new Role("USER");
 
-        r1.setRoleid(1);
-        r2.setRoleid(2);
+        User u1 = userList.get(0);
+        MarketLocation mk1 = marketLocationList.get(0);
 
-        User u1 = new User("admin",
-                "password",
-                "admin@gmail.com",
-                "Test Fname",
-                "Test Lname",
-                "New York",
-                "USA",
-                "English",
-                "USD");
-        u1.setUserid(1);
-        u1.getRoles().add(new UserRoles(u1, r1));
-        u1.getRoles().add(new UserRoles(u1, r2));
-
-        MarketLocation mk1 = new MarketLocation("Test Market 1", "Main Street", "New York", "USA");
-        MarketLocation mk2 = new MarketLocation("Test Market 2", "Main Street", "Chicago", "USA");
-
-        mk1.setMarketlocationid(1);
-        mk2.setMarketlocationid(2);
-
-        Item i1 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 10.00, 50.00);
-        Item i2 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 20.00, 100.00);
-
+        Item i1 = new Item("Beans", "Beans", "Green Beans", "Delicious red beans!", 10.00, 50.00);
         i1.setItemid(0);
-        i2.setItemid(2);
-
         i1.setUser(u1);
-        i2.setUser(u1);
+        i1.getMarketsSold().add(new MarketLocationItems(mk1, i1));
 
-        itemList.add(i1);
-        itemList.add(i2);
-
-        mk1.getItems().add(new MarketLocationItems(mk1, i1));
-        mk1.getItems().add(new MarketLocationItems(mk1, i2));
-
-        u1.getMarketLocations().add(mk1);
-        u1.getMarketLocations().add(mk2);
 
         Mockito.when(userService.findUserById(1L))
                 .thenReturn(u1);
@@ -203,48 +169,13 @@ public class ItemServiceImplUnitNoDBTest {
 
     @Test
     public void savePut() {
-        Role r1 = new Role("ADMIN");
-        Role r2 = new Role("USER");
+        User u1 = userList.get(0);
+        MarketLocation mk1 = marketLocationList.get(0);
 
-        r1.setRoleid(1);
-        r2.setRoleid(2);
-
-        User u1 = new User("admin",
-                "password",
-                "admin@gmail.com",
-                "Test Fname",
-                "Test Lname",
-                "New York",
-                "USA",
-                "English",
-                "USD");
-        u1.setUserid(1);
-        u1.getRoles().add(new UserRoles(u1, r1));
-        u1.getRoles().add(new UserRoles(u1, r2));
-
-        MarketLocation mk1 = new MarketLocation("Test Market 1", "Main Street", "New York", "USA");
-        MarketLocation mk2 = new MarketLocation("Test Market 2", "Main Street", "Chicago", "USA");
-
-        mk1.setMarketlocationid(1);
-        mk2.setMarketlocationid(2);
-
-        Item i1 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 10.00, 50.00);
-        Item i2 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 20.00, 100.00);
-
+        Item i1 = new Item("Beans", "Beans", "Green Beans", "Delicious red beans!", 10.00, 50.00);
         i1.setItemid(1);
-        i2.setItemid(2);
-
         i1.setUser(u1);
-        i2.setUser(u1);
-
-        itemList.add(i1);
-        itemList.add(i2);
-
-        mk1.getItems().add(new MarketLocationItems(mk1, i1));
-        mk1.getItems().add(new MarketLocationItems(mk1, i2));
-
-        u1.getMarketLocations().add(mk1);
-        u1.getMarketLocations().add(mk2);
+        i1.getMarketsSold().add(new MarketLocationItems(mk1, i1));
 
         Mockito.when(itemrepos.findById(1L))
                 .thenReturn(Optional.of(i1));
@@ -262,48 +193,13 @@ public class ItemServiceImplUnitNoDBTest {
 
     @Test(expected = ResourceNotFoundException.class)
     public void savePutItemNotFound() {
-        Role r1 = new Role("ADMIN");
-        Role r2 = new Role("USER");
+        User u1 = userList.get(0);
+        MarketLocation mk1 = marketLocationList.get(0);
 
-        r1.setRoleid(1);
-        r2.setRoleid(2);
-
-        User u1 = new User("admin",
-                "password",
-                "admin@gmail.com",
-                "Test Fname",
-                "Test Lname",
-                "New York",
-                "USA",
-                "English",
-                "USD");
-        u1.setUserid(1);
-        u1.getRoles().add(new UserRoles(u1, r1));
-        u1.getRoles().add(new UserRoles(u1, r2));
-
-        MarketLocation mk1 = new MarketLocation("Test Market 1", "Main Street", "New York", "USA");
-        MarketLocation mk2 = new MarketLocation("Test Market 2", "Main Street", "Chicago", "USA");
-
-        mk1.setMarketlocationid(1);
-        mk2.setMarketlocationid(2);
-
-        Item i1 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 10.00, 50.00);
-        Item i2 = new Item("Beans", "Beans", "Red Beans", "Delicious red beans!", 20.00, 100.00);
-
+        Item i1 = new Item("Beans", "Beans", "Green Beans", "Delicious red beans!", 10.00, 50.00);
         i1.setItemid(1);
-        i2.setItemid(2);
-
         i1.setUser(u1);
-        i2.setUser(u1);
-
-        itemList.add(i1);
-        itemList.add(i2);
-
-        mk1.getItems().add(new MarketLocationItems(mk1, i1));
-        mk1.getItems().add(new MarketLocationItems(mk1, i2));
-
-        u1.getMarketLocations().add(mk1);
-        u1.getMarketLocations().add(mk2);
+        i1.getMarketsSold().add(new MarketLocationItems(mk1, i1));
 
         Mockito.when(itemrepos.findById(1L))
                 .thenReturn(Optional.empty());
