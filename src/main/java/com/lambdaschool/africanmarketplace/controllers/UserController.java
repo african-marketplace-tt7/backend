@@ -1,6 +1,7 @@
 package com.lambdaschool.africanmarketplace.controllers;
 
 import com.lambdaschool.africanmarketplace.models.User;
+import com.lambdaschool.africanmarketplace.services.AmazonClient;
 import com.lambdaschool.africanmarketplace.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -10,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -29,6 +31,9 @@ public class UserController
      */
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AmazonClient amazonClient;
 
     /**
      * Returns a list of all users
@@ -230,5 +235,28 @@ public class UserController
         User u = userService.findByName(authentication.getName());
         return new ResponseEntity<>(u,
             HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/user/photo", produces = "application/json")
+    public ResponseEntity<?> addPhoto(@RequestPart(value = "photo")MultipartFile photo, Authentication authentication) throws Exception
+    {
+        User user = userService.findByName(authentication.getName());
+        String photoURL = amazonClient.uploadFile(photo);
+        user.setPhotoURL(photoURL);
+        user = userService.save(user);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/user/photo", produces = "application/json")
+    public ResponseEntity<?> deletePhoto(Authentication authentication)
+    {
+        User user = userService.findByName(authentication.getName());
+        amazonClient.deleteFileFromS3Bucket(user.getPhotoURL());
+        user.setPhotoURL(null);
+        System.out.println(user);
+        user = userService.save(user);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

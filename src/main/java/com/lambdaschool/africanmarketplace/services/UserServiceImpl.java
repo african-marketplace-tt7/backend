@@ -27,6 +27,8 @@ public class UserServiceImpl
     @Autowired
     private MarketLocationService marketLocationService;
 
+    @Autowired ItemService itemService;
+
 
     /**
      * Connects this service to the Role table
@@ -110,6 +112,7 @@ public class UserServiceImpl
         newUser.setCountry(user.getCountry());
         newUser.setPreferredCurrency(user.getPreferredCurrency());
         newUser.setPrimaryLanguage(user.getPrimaryLanguage());
+        newUser.setPhotoURL(user.getPhotoURL());
 
         newUser.getRoles()
             .clear();
@@ -122,14 +125,17 @@ public class UserServiceImpl
                     addRole));
         }
 
-        newUser = userrepos.save(newUser);
-
-
         for (MarketLocation ml : user.getMarketLocations())
         {
             ml.setUser(newUser);
             MarketLocation newMarketLocation = marketLocationService.save(ml);
             newUser.getMarketLocations().add(newMarketLocation);
+        }
+
+        for (Item i : user.getItemsForSale()) {
+            i.setUser(newUser);
+            Item newItem = itemService.save(i);
+            newUser.getItemsForSale().add(newItem);
         }
 
         return userrepos.save(newUser);
@@ -194,6 +200,11 @@ public class UserServiceImpl
                 currentUser.setPrimaryLanguage(user.getPrimaryLanguage());
             }
 
+            if(user.getPhotoURL() != null)
+            {
+                currentUser.setPhotoURL(user.getPhotoURL());
+            }
+
             if (user.getRoles()
                 .size() > 0)
             {
@@ -218,6 +229,17 @@ public class UserServiceImpl
                     ml.setUser(currentUser);
                     MarketLocation newMarketLocation = marketLocationService.save(ml);
                     currentUser.getMarketLocations().add(newMarketLocation);
+                }
+            }
+
+            if(user.getItemsForSale().size() > 0)
+            {
+                currentUser.getItemsForSale().clear();
+                for(Item i : user.getItemsForSale())
+                {
+                    i.setUser(currentUser);
+                    Item newItem = itemService.save(i);
+                    currentUser.getItemsForSale().add(newItem);
                 }
             }
 

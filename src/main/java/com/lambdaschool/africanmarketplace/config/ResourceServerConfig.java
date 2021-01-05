@@ -63,15 +63,6 @@ public class ResourceServerConfig
                 "/webjars/**",
                 "/createnewuser")
             .permitAll()
-            .antMatchers(HttpMethod.POST,
-                "/users/**")
-            .hasAnyRole("ADMIN")
-            .antMatchers(HttpMethod.DELETE,
-                "/users/**")
-            .hasAnyRole("ADMIN")
-            .antMatchers(HttpMethod.PUT,
-                "/users/**")
-            .hasAnyRole("ADMIN")
             .antMatchers("/users/**",
                 "/marketlocations/**",
                 "/items/**",
